@@ -25,7 +25,7 @@ public class Main {
         String [] numbers = new String [27];
         for (int i = 0; i < options.length; i ++)
         {
-            
+
         }
 
     }
