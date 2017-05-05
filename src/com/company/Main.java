@@ -23,9 +23,13 @@ public class Main {
         }
 
         String [] numbers = new String [27];
+        double total = 0;
+
         for (int i = 0; i < options.length; i ++)
         {
-
+            int indx = options[i].indexOf("+");
+            options[i] = options[i].substring(0,indx) + options[i].substring(indx + 1);
+            total = total + (Double.parseDouble(options[i].substring(indx + 2, indx + 4)));
         }
 
     }
