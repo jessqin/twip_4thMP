@@ -8,13 +8,24 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
 
-        Scanner sc = new Scanner(new File("src/rawDataU6.txt"));
+        Scanner test = new Scanner(new File("src/rawDataU6.txt"));
 
-        sc.nextLine();
+        test.nextLine();
 
         int txtLength = -1;
-        String [] options = new String[500];
+        int size = 0;
 
+        while (test.hasNextLine())
+        {
+            size++;
+            test.nextLine();
+        }
+        test.close();
+
+        ArrayList<Student> studentList = new ArrayList();
+        String [] options = new String[size];
+        Scanner sc = new Scanner(new File("src/rawDataU6.txt"));
+        sc.nextLine();
         while (sc.hasNextLine())
         {
             txtLength++;
@@ -22,14 +33,37 @@ public class Main {
             options [txtLength] = sc.nextLine();
         }
 
-        String [] numbers = new String [27];
+        String [] secretNum = new String [27];
+
+        for (int i = 0; i < options.length; i++)
+        {
+            if (!options[i].substring(0, 2).replaceAll("//s","").contains("(") || !options[i].substring(0, 2).replaceAll("//s","").contains("A"))
+            {
+                secretNum[i] = options[i];
+            }
+        }
+
         double total = 0;
 
         for (int i = 0; i < options.length; i ++)
         {
-            int indx = options[i].indexOf("+");
-            options[i] = options[i].substring(0,indx) + options[i].substring(indx + 1);
-            total = total + (Double.parseDouble(options[i].substring(indx + 2, indx + 4)));
+            options[i] = options[i].replaceAll("//s", "");
+        }
+
+        for (int k = 0; k<options.length; k++)
+        {
+            for (int i = 0; i < options.length; i ++)
+            {
+                int indx = options[i].indexOf("+");
+                if (indx != -1)
+                {
+                    options[i] = options[i].substring(0,indx) + options[i].substring(indx + 1);
+                    total = total + (Double.parseDouble(options[i].substring(indx + 1, indx + 3)));
+                }
+
+            }
+            Student s = new Student(secretNum[k], total);
+            studentList.add(s);
         }
 
     }
