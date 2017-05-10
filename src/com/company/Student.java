@@ -12,4 +12,13 @@ public class Student
         num = n;
         score = s;
     }
+    public String returnNum()
+    {
+        return num;
+    }
+    public double returnScore()
+    {
+        return score;
+    }
+
 }
