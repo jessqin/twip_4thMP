@@ -9,19 +9,12 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
 
-        BufferedReader test = new BufferedReader(new FileReader("src/rawDataU6.txt"));
 
         int txtLength = -1;
         int size = -1;
 
-        while (test.readLine() != null)
-        {
-            size++;
-        }
-        test.close();
-
         ArrayList<Student> studentList = new ArrayList();
-        String [] options = new String[size];
+        ArrayList<String> options = new ArrayList<>();
 
         BufferedReader br = new BufferedReader(new FileReader("src/rawDataU6.txt"));
         br .readLine();
@@ -30,53 +23,73 @@ public class Main {
         {
             txtLength++;
 
-            options [txtLength] = line;
+            options.add(line);
 
         }
-        for (int i = 0; i<options.length; i++)
+        for (int i = 0; i<options.size(); i++)
         {
-            System.out.println(options[i]);
-        }
-
-
-        String [] secretNum = new String [27];
-
-        for (int i = 0; i < options.length; i++)
-        {
-            if (!options[i].contains("+"))
+            if ((!options.get(i).contains("+")) || options.get(i).substring(0,1).equalsIgnoreCase("(") || options.get(i).substring(0,1).equalsIgnoreCase("A"))
             {
-                if (!options[i].substring(0, 2).replaceAll("//s","").contains("(") && !options[i].substring(0, 2).replaceAll("//s","").contains("A"))
-                {
-                    secretNum[i] = options[i].substring(0,2);
-                }
+                options.remove(i);
             }
-
         }
+        options.remove(26);
+
+
+//        for (int i = 0; i<options.size(); i++)
+//        {
+//            System.out.println(options.get(i));
+//        }
+
+
+        String [] secretNum = new String [51];
+
 
         double total = 0;
 
-        for (int i = 0; i < options.length; i++)
+        for (int i = 0; i < options.size(); i++)
         {
-            options[i] = options[i].replaceAll("//s", "");
+            options.set(i,options.get(i).replaceAll("\t"," "));
         }
 
-        for (int k = 0; k<options.length; k++)
+        for (int i = 0; i < options.size(); i++)
         {
-            for (int i = 0; i < options.length; i ++)
+            secretNum[i] = options.get(i).substring(0,2);
+
+        }
+
+        for (int k = 0; k<secretNum.length; k++)
+        {
+            for (int i = 0; i < options.size(); i ++)
             {
-                int indx = options[i].indexOf("+");
-                if (indx != -1 && (options[i].substring(i+1, i+2).equalsIgnoreCase("1") || options[i].substring(i+1, i+2).equalsIgnoreCase(".")))
+                int indx = options.get(i).indexOf("+");
+                while (indx !=-1)
                 {
-                    options[i] = options[i].substring(0,indx) + options[i].substring(indx + 1);
-                    total = total + (Double.parseDouble(options[i].substring(indx + 1, indx + 3)));
+                    if (options.get(i).substring(indx + 2, indx + 4).contains("1"))
+                    {
+                        total += 1;
+                    }
+                    else if (options.get(i).substring(indx + 2, indx + 4).contains("5"))
+                    {
+                        total += .5;
+                    }
+                    options.set(i,options.get(i).substring(indx + 1));
+                    indx = options.get(i).indexOf("+");
                 }
 
             }
             Student s = new Student(secretNum[k], total);
             studentList.add(s);
+            total = 0;
         }
 
-        double avg;
+        ArrayList<Student> avgGrade = new ArrayList<>();
+        System.out.println("Secret Number" + "\t\t" + "Score");
+        for (int i = 0; i<studentList.size();i++)
+        {
+
+            System.out.println(studentList.get(i).returnNum() + "\t\t\t\t\t" + studentList.get(i).returnScore());
+        }
 
 
     }
