@@ -48,65 +48,72 @@ public class Main {
             secretNum[i] = options.get(i).substring(0,2).replaceAll("\t", "");
 
         }
+        for (int i = 0; i < options.size(); i++)
+        {
+            options.get(i).replaceAll("\t"," ");
+//            System.out.println(options.get(i));
+        }
 
         for (int i = 0; i < options.size(); i++)
         {
+            int k = 0;
             int start = options.get(i).indexOf("\"");
             options.set(i, options.get(i).substring(start + 1));
             int end = options.get(i).indexOf("\"");
-            String q = options.get(i).substring(start,end);
+            String q = options.get(i).substring(0,end);
 
-            if (options.get(i).substring(start + 1, start + 2).equalsIgnoreCase("+"))
+            if (q.contains("+"))
             {
-                for (int k = 0; i < lineOp.length; k ++)
+                for (k = 0; i < q.length(); k ++)
                 {
                     int indx = q.indexOf("+");
                     while (indx !=-1)
                     {
-                        if (options.get(i).substring(indx + 2, indx + 4).contains("1"))
+                        if (q.substring(indx + 2, indx + 4).contains("1"))
                         {
                             fr1 += 1;
                         }
-                        else if (options.get(i).substring(indx + 2, indx + 4).contains("5"))
+                        else if (q.substring(indx + 2, indx + 4).contains("5"))
                         {
                             fr1 += .5;
                         }
-                        options.set(i,options.get(i).substring(indx + 1));
-                        indx = options.get(i).indexOf("+");
+                        q = q.substring(indx + 1);
+                        indx = q.indexOf("+");
                     }
                     fr1Array[i] = fr1;
                     fr1 = 0;
+                    q = options.get(i).substring(end + 1);
+                    break;
                 }
-                start = options.get(i).indexOf("\"");
-                options.set(i, options.get(i).substring(start + 1));
-                end = options.get(i).indexOf("\"");
-                q = options.get(i).substring(start,end);
-                for (int k = 0; i < lineOp.length; k ++)
+                start = q.indexOf("\"");
+                q = q.substring(start + 1);
+                end = q.indexOf("\"");
+                if  (end != -1)
                 {
-                    int indx = lineOp[2].indexOf("+");
+                    q = q.substring(0,end);
+                }
+                for (k = 0; i < q.length(); k ++)
+                {
+                    int indx = q.indexOf("+");
                     while (indx !=-1)
                     {
-                        if (options.get(i).substring(indx + 2, indx + 4).contains("1"))
+                        if (q.substring(indx + 2, indx + 4).contains("1"))
                         {
                             fr2 += 1;
                         }
-                        else if (options.get(i).substring(indx + 2, indx + 4).contains("5"))
+                        else if (q.substring(indx + 2, indx + 4).contains("5"))
                         {
                             fr2 += .5;
                         }
-                        options.set(i,options.get(i).substring(indx + 1));
-                        indx = options.get(i).indexOf("+");
+                        q = q.substring(indx + 1);
+                        indx = q.indexOf("+");
                     }
                     fr2Array[i] = fr2;
                     fr2 = 0;
+                    break;
                 }
             }
 
-        }
-
-        for (int i = 0; i < fr1Array.length; i++)
-        {
-            System.out.println(fr1Array[i]);
         }
 
         for (int i = 0; i < fr1Array.length; i++)
@@ -142,11 +149,11 @@ public class Main {
             }
         }
 
-        System.out.println("Secret Number" + "\t\t" + "FR1" + "\t\t" + "FR2" + "\t\t" + "AVG Total Grade");
+        System.out.println("Secret Number" + "\t\t" + "FR1" + "\t\t\t\t" + "FR2" + "\t\t\t\t" + "AVG Total Grade");
         for (int i = 0; i<avgGrade.size();i++)
         {
 
-            System.out.println(avgGrade.get(i).returnNum() + "\t\t\t\t\t" + avgGrade.get(i).getResponse1() + "\t\t" + avgGrade.get(i).getResponse2() + "\t\t"
+            System.out.println(avgGrade.get(i).returnNum() + "\t\t\t\t\t" + avgGrade.get(i).getResponse1() + "\t\t\t\t\t" + avgGrade.get(i).getResponse2() + "\t\t\t\t"
                     + avgGrade.get(i).returnScore() + "/19");
         }
 
