@@ -9,12 +9,23 @@ public class Student
     private double score;
     private double response1;
     private double response2;
+    private String name;
     public Student(String n, double fr1, double fr2, double s)
     {
         num = n;
         score = s;
         response1 = fr1;
         response2 = fr2;
+    }
+    public Student(String n,double s)
+    {
+        num = n;
+        score = s;
+    }
+    public Student(String n, String id)
+    {
+        name = n;
+        num = id;
     }
     public String returnNum()
     {
@@ -32,5 +43,10 @@ public class Student
     {
         return response2;
     }
+    public String returnName()
+    {
+        return name;
+    }
+
 
 }

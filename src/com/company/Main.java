@@ -85,8 +85,40 @@ public class Main {
                     q = options.get(i).substring(end + 1);
                     break;
                 }
+                options.set(i,q);
                 start = q.indexOf("\"");
                 q = q.substring(start + 1);
+                end = q.indexOf("\"");
+                if  (end != -1)
+                {
+                    q = q.substring(0,end);
+                }
+                for (k = 0; i < q.length(); k ++)
+                {
+                    int indx = q.indexOf("+");
+                    while (indx !=-1)
+                    {
+                        if (q.substring(indx + 2, indx + 4).contains("1"))
+                        {
+                            fr1 += 1;
+                        }
+                        else if (q.substring(indx + 2, indx + 4).contains("5"))
+                        {
+                            fr1 += .5;
+                        }
+                        q = q.substring(indx + 1);
+                        indx = q.indexOf("+");
+                    }
+                    fr1Array[i] = fr1Array[i] + fr1;
+                    fr1 = 0;
+                    q = options.get(i).substring(end + 1);
+                    break;
+                }
+
+
+
+                start = q.indexOf("\"");
+//                q = q.substring(start + 1);
                 end = q.indexOf("\"");
                 if  (end != -1)
                 {
@@ -110,6 +142,34 @@ public class Main {
                     }
                     fr2Array[i] = fr2;
                     fr2 = 0;
+
+                    break;
+                }
+                start = q.indexOf("\"");
+                q = q.substring(start + 1);
+                end = q.indexOf("\"");
+                if  (end != -1)
+                {
+                    q = q.substring(0,end);
+                }
+                for (k = 0; i < q.length(); k ++)
+                {
+                    int indx = q.indexOf("+");
+                    while (indx !=-1)
+                    {
+                        if (q.substring(indx + 2, indx + 4).contains("1"))
+                        {
+                            fr2 += 1;
+                        }
+                        else if (q.substring(indx + 2, indx + 4).contains("5"))
+                        {
+                            fr2 += .5;
+                        }
+                        q = q.substring(indx + 1);
+                        indx = q.indexOf("+");
+                    }
+                    fr2Array[i] = fr2Array[i] + fr2;
+                    fr2 = 0;
                     break;
                 }
             }
@@ -127,7 +187,26 @@ public class Main {
         double fr1Avg = 0;
         double fr2Avg = 0;
 
-        //BufferedReader nameFile = new BufferedReader(new FileReader("names.txt"));
+        BufferedReader nameFile = new BufferedReader(new FileReader("names.txt"));
+
+        ArrayList<String> nameID = new ArrayList<>();
+        ArrayList<Student> sID = new ArrayList<>();
+
+        String nameLine;
+        String name = "";
+
+        while ((nameLine = br.readLine()) != null)
+        {
+            nameID.add(nameLine);
+        }
+        for (int i = 0; i < nameID.size(); i ++)
+        {
+            int location = nameID.get(i).indexOf("\t");
+            name = nameID.get(i).substring(0,location);
+            String num = nameID.get(i).substring(location);
+            Student s2 = new Student(name, num);
+            sID.add(s2);
+        }
 
         for (int i = 1; i < studentList.size(); i++)
         {
@@ -148,25 +227,30 @@ public class Main {
                 avgGrade.add(s);
             }
         }
-
-        System.out.println("Secret Number" + "\t\t" + "FR1" + "\t\t\t\t" + "FR2" + "\t\t\t\t" + "AVG Total Grade");
+        System.out.println("Name"+ "\t\t\t\t\t\t\t\t\t" + "Secret Number" + "\t\t" + "FR1" + "\t\t\t\t\t" + "FR2" + "\t\t\t\t\t\t\t" + "AVG Total Grade");
         for (int i = 0; i<avgGrade.size();i++)
         {
-
-            System.out.println(avgGrade.get(i).returnNum() + "\t\t\t\t\t" + avgGrade.get(i).getResponse1() + "\t\t\t\t\t" + avgGrade.get(i).getResponse2() + "\t\t\t\t"
+            for (int k = 0; k < sID.size(); k++)
+            {
+                if (avgGrade.get(i).returnNum().equalsIgnoreCase(sID.get(k).returnNum()))
+                {
+                    name = sID.get(k).returnName();
+                }
+            }
+            if (avgGrade.get(i).getResponse1()%0.1 == 0.05)
+            {
+                System.out.println( "\t\t\t\t\t\t\t\t\t\t" + avgGrade.get(i).returnNum() + "\t\t\t\t\t" + avgGrade.get(i).getResponse1() + "\t\t\t\t" + avgGrade.get(i).getResponse2() + "\t\t\t\t\t\t\t"
+                        + avgGrade.get(i).returnScore() + "/19");
+            }
+            System.out.println( "\t\t\t\t\t\t\t\t\t\t" + avgGrade.get(i).returnNum() + "\t\t\t\t\t" + avgGrade.get(i).getResponse1() + "\t\t\t\t\t" + avgGrade.get(i).getResponse2() + "\t\t\t\t\t\t\t"
                     + avgGrade.get(i).returnScore() + "/19");
         }
 
 
 
 
-
-
-
-
-
-
 //        double total = 0;
+//        ArrayList<Student> studentArrayList = new ArrayList<>();
 //
 //        double [] totals = new double[secretNum.length];
 //
@@ -191,9 +275,12 @@ public class Main {
 //        }
 //        for (int k = 0; k < options.size();k++)
 //        {
-//            //Student s = new Student(secretNum[k], totals[k]);
-//            studentList.add(s);
+//            Student s = new Student(secretNum[k], totals[k]);
+//            studentArrayList.add(s);
 //        }
+//
+//
+
 
 
     }
